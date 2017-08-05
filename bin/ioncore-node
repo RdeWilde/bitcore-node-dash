@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+var ioncore = require('../lib/cli/ioncore');
+ioncore();

@@ -9,7 +9,7 @@ var log = index.log;
 log.debug = function() {};
 
 var chai = require('chai');
-var bitcore = require('bitcore-lib-dash');
+var ioncore = require('ioncore-lib-dash');
 var rimraf = require('rimraf');
 var node;
 
@@ -17,8 +17,8 @@ var should = chai.should();
 
 var BitcoinRPC = require('bitcoind-rpc-dash');
 var index = require('..');
-var Transaction = bitcore.Transaction;
-var BitcoreNode = index.Node;
+var Transaction = ioncore.Transaction;
+var ioncoreNode = index.Node;
 var BitcoinService = index.services.Bitcoin;
 var testWIF = 'cSdkPxkAjA4HDr5VHgsebAPDEh9Gyub4HK8UJr2DFGGqKKy4K5sG';
 var testKey;
@@ -36,7 +36,7 @@ describe('Node Functionality', function() {
 
     var datadir = __dirname + '/data';
 
-    testKey = bitcore.PrivateKey(testWIF);
+    testKey = ioncore.PrivateKey(testWIF);
 
     rimraf(datadir + '/regtest', function(err) {
 
@@ -53,16 +53,16 @@ describe('Node Functionality', function() {
             config: {
               spawn: {
                 datadir: datadir,
-                exec: path.resolve(__dirname, process.env.HOME, './.bitcore/data/dashd')
+                exec: path.resolve(__dirname, process.env.HOME, './.ioncore/data/dashd')
               }
             }
           }
         ]
       };
 
-      node = new BitcoreNode(configuration);
+      node = new ioncoreNode(configuration);
 
-      regtest = bitcore.Networks.get('regtest');
+      regtest = ioncore.Networks.get('regtest');
       should.exist(regtest);
 
       node.on('error', function(err) {
@@ -255,19 +255,19 @@ describe('Node Functionality', function() {
           }
         });
 
-        testKey2 = bitcore.PrivateKey.fromWIF('cNfF4jXiLHQnFRsxaJyr2YSGcmtNYvxQYSakNhuDGxpkSzAwn95x');
+        testKey2 = ioncore.PrivateKey.fromWIF('cNfF4jXiLHQnFRsxaJyr2YSGcmtNYvxQYSakNhuDGxpkSzAwn95x');
         address2 = testKey2.toAddress(regtest).toString();
 
-        testKey3 = bitcore.PrivateKey.fromWIF('cVTYQbaFNetiZcvxzXcVMin89uMLC43pEBMy2etgZHbPPxH5obYt');
+        testKey3 = ioncore.PrivateKey.fromWIF('cVTYQbaFNetiZcvxzXcVMin89uMLC43pEBMy2etgZHbPPxH5obYt');
         address3 = testKey3.toAddress(regtest).toString();
 
-        testKey4 = bitcore.PrivateKey.fromWIF('cPNQmfE31H2oCUFqaHpfSqjDibkt7XoT2vydLJLDHNTvcddCesGw');
+        testKey4 = ioncore.PrivateKey.fromWIF('cPNQmfE31H2oCUFqaHpfSqjDibkt7XoT2vydLJLDHNTvcddCesGw');
         address4 = testKey4.toAddress(regtest).toString();
 
-        testKey5 = bitcore.PrivateKey.fromWIF('cVrzm9gCmnzwEVMGeCxY6xLVPdG3XWW97kwkFH3H3v722nb99QBF');
+        testKey5 = ioncore.PrivateKey.fromWIF('cVrzm9gCmnzwEVMGeCxY6xLVPdG3XWW97kwkFH3H3v722nb99QBF');
         address5 = testKey5.toAddress(regtest).toString();
 
-        testKey6 = bitcore.PrivateKey.fromWIF('cPfMesNR2gsQEK69a6xe7qE44CZEZavgMUak5hQ74XDgsRmmGBYF');
+        testKey6 = ioncore.PrivateKey.fromWIF('cPfMesNR2gsQEK69a6xe7qE44CZEZavgMUak5hQ74XDgsRmmGBYF');
         address6 = testKey6.toAddress(regtest).toString();
 
         var tx = new Transaction();
@@ -660,7 +660,7 @@ describe('Node Functionality', function() {
       });
 
       it('will update the mempool index after new tx', function(done) {
-        var memAddress = bitcore.PrivateKey().toAddress(node.network).toString();
+        var memAddress = ioncore.PrivateKey().toAddress(node.network).toString();
         var tx = new Transaction();
         tx.from(unspentOutput);
         tx.to(memAddress, unspentOutput.satoshis - 2000);

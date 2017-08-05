@@ -6,8 +6,8 @@ var path = require('path');
 var EventEmitter = require('events').EventEmitter;
 var should = require('chai').should();
 var crypto = require('crypto');
-var bitcore = require('bitcore-lib-dash');
-var _ = bitcore.deps._;
+var ioncore = require('ioncore-lib-dash');
+var _ = ioncore.deps._;
 var sinon = require('sinon');
 var proxyquire = require('proxyquire');
 var fs = require('fs');
@@ -17,7 +17,7 @@ var index = require('../../lib');
 var log = index.log;
 var errors = index.errors;
 
-var Transaction = bitcore.Transaction;
+var Transaction = ioncore.Transaction;
 var readFileSync = sinon.stub().returns(fs.readFileSync(path.resolve(__dirname, '../data/bitcoin.conf')));
 var BitcoinService = proxyquire('../../lib/services/bitcoind', {
   fs: {
@@ -31,7 +31,7 @@ describe('Bitcoin Service', function() {
 
   var baseConfig = {
     node: {
-      network: bitcore.Networks.testnet
+      network: ioncore.Networks.testnet
     },
     spawn: {
       datadir: 'testdir',
@@ -420,8 +420,8 @@ describe('Bitcoin Service', function() {
       });
       var config = {
         node: {
-          network: bitcore.Networks.testnet,
-          configPath: '/tmp/.bitcore/bitcore-node.json'
+          network: ioncore.Networks.testnet,
+          configPath: '/tmp/.ioncore/ioncore-node.json'
         },
         spawn: {
           datadir: './data',
@@ -432,7 +432,7 @@ describe('Bitcoin Service', function() {
       bitcoind.options.spawn.datadir = './data';
       var node = {};
       bitcoind._loadSpawnConfiguration(node);
-      bitcoind.options.spawn.datadir.should.equal('/tmp/.bitcore/data');
+      bitcoind.options.spawn.datadir.should.equal('/tmp/.ioncore/data');
     });
     it('should throw an exception if txindex isn\'t enabled in the configuration', function() {
       var TestBitcoin = proxyquire('../../lib/services/bitcoind', {
@@ -447,7 +447,7 @@ describe('Bitcoin Service', function() {
       var bitcoind = new TestBitcoin(baseConfig);
       (function() {
         bitcoind._loadSpawnConfiguration({datadir: './test'});
-      }).should.throw(bitcore.errors.InvalidState);
+      }).should.throw(ioncore.errors.InvalidState);
     });
     it('should NOT set https options if node https options are set', function() {
       var writeFileSync = function(path, config) {
@@ -771,13 +771,13 @@ describe('Bitcoin Service', function() {
 
   describe('#_getDefaultConf', function() {
     afterEach(function() {
-      bitcore.Networks.disableRegtest();
-      baseConfig.node.network = bitcore.Networks.testnet;
+      ioncore.Networks.disableRegtest();
+      baseConfig.node.network = ioncore.Networks.testnet;
     });
     it('will get default rpc port for livenet', function() {
       var config = {
         node: {
-          network: bitcore.Networks.livenet
+          network: ioncore.Networks.livenet
         },
         spawn: {
           datadir: 'testdir',
@@ -790,7 +790,7 @@ describe('Bitcoin Service', function() {
     it('will get default rpc port for testnet', function() {
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -801,10 +801,10 @@ describe('Bitcoin Service', function() {
       bitcoind._getDefaultConf().rpcport.should.equal(19998);
     });
     it('will get default rpc port for regtest', function() {
-      bitcore.Networks.enableRegtest();
+      ioncore.Networks.enableRegtest();
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -818,13 +818,13 @@ describe('Bitcoin Service', function() {
 
   describe('#_getNetworkConfigPath', function() {
     afterEach(function() {
-      bitcore.Networks.disableRegtest();
-      baseConfig.node.network = bitcore.Networks.testnet;
+      ioncore.Networks.disableRegtest();
+      baseConfig.node.network = ioncore.Networks.testnet;
     });
     it('will get default config path for livenet', function() {
       var config = {
         node: {
-          network: bitcore.Networks.livenet
+          network: ioncore.Networks.livenet
         },
         spawn: {
           datadir: 'testdir',
@@ -837,7 +837,7 @@ describe('Bitcoin Service', function() {
     it('will get default rpc port for testnet', function() {
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -848,10 +848,10 @@ describe('Bitcoin Service', function() {
       bitcoind._getNetworkConfigPath().should.equal('testnet3/dash.conf');
     });
     it('will get default rpc port for regtest', function() {
-      bitcore.Networks.enableRegtest();
+      ioncore.Networks.enableRegtest();
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -865,24 +865,24 @@ describe('Bitcoin Service', function() {
 
   describe('#_getNetworkOption', function() {
     afterEach(function() {
-      bitcore.Networks.disableRegtest();
-      baseConfig.node.network = bitcore.Networks.testnet;
+      ioncore.Networks.disableRegtest();
+      baseConfig.node.network = ioncore.Networks.testnet;
     });
     it('return --testnet for testnet', function() {
       var bitcoind = new BitcoinService(baseConfig);
-      bitcoind.node.network = bitcore.Networks.testnet;
+      bitcoind.node.network = ioncore.Networks.testnet;
       bitcoind._getNetworkOption().should.equal('--testnet');
     });
     it('return --regtest for testnet', function() {
       var bitcoind = new BitcoinService(baseConfig);
-      bitcoind.node.network = bitcore.Networks.testnet;
-      bitcore.Networks.enableRegtest();
+      bitcoind.node.network = ioncore.Networks.testnet;
+      ioncore.Networks.enableRegtest();
       bitcoind._getNetworkOption().should.equal('--regtest');
     });
     it('return undefined for livenet', function() {
       var bitcoind = new BitcoinService(baseConfig);
-      bitcoind.node.network = bitcore.Networks.livenet;
-      bitcore.Networks.enableRegtest();
+      bitcoind.node.network = ioncore.Networks.livenet;
+      ioncore.Networks.enableRegtest();
       should.equal(bitcoind._getNetworkOption(), undefined);
     });
   });
@@ -1073,7 +1073,7 @@ describe('Bitcoin Service', function() {
     it('will not call syncPercentage if node is stopping', function(done) {
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -1102,17 +1102,17 @@ describe('Bitcoin Service', function() {
   });
 
   describe('#_getAddressesFromTransaction', function() {
-    it('will get results using bitcore.Transaction', function() {
+    it('will get results using ioncore.Transaction', function() {
       var bitcoind = new BitcoinService(baseConfig);
       var wif = 'XGLgPK8gbmzU7jcbw34Pj55AXV7SmG6carKuiwtu4WtvTjyTbpwX';
-      var privkey = bitcore.PrivateKey.fromWIF(wif);
-      var inputAddress = privkey.toAddress(bitcore.Networks.testnet);
-      var outputAddress = bitcore.Address('8oUSpiq5REeEKAzS1qSXoJbZ9TRfH1L6mi');
-      var tx = bitcore.Transaction();
+      var privkey = ioncore.PrivateKey.fromWIF(wif);
+      var inputAddress = privkey.toAddress(ioncore.Networks.testnet);
+      var outputAddress = ioncore.Address('8oUSpiq5REeEKAzS1qSXoJbZ9TRfH1L6mi');
+      var tx = ioncore.Transaction();
       tx.from({
         txid: '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b',
         outputIndex: 0,
-        script: bitcore.Script(inputAddress),
+        script: ioncore.Script(inputAddress),
         address: inputAddress.toString(),
         satoshis: 5000000000
       });
@@ -1125,18 +1125,18 @@ describe('Bitcoin Service', function() {
     });
     it('will handle non-standard script types', function() {
       var bitcoind = new BitcoinService(baseConfig);
-      var tx = bitcore.Transaction();
-      tx.addInput(bitcore.Transaction.Input({
+      var tx = ioncore.Transaction();
+      tx.addInput(ioncore.Transaction.Input({
         prevTxId: '4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b',
-        script: bitcore.Script('OP_TRUE'),
+        script: ioncore.Script('OP_TRUE'),
         outputIndex: 1,
         output: {
-          script: bitcore.Script('OP_TRUE'),
+          script: ioncore.Script('OP_TRUE'),
           satoshis: 5000000000
         }
       }));
-      tx.addOutput(bitcore.Transaction.Output({
-        script: bitcore.Script('OP_TRUE'),
+      tx.addOutput(ioncore.Transaction.Output({
+        script: ioncore.Script('OP_TRUE'),
         satoshis: 5000000000
       }));
       var addresses = bitcoind._getAddressesFromTransaction(tx);
@@ -1144,8 +1144,8 @@ describe('Bitcoin Service', function() {
     });
     it('will handle unparsable script types or missing input script', function() {
       var bitcoind = new BitcoinService(baseConfig);
-      var tx = bitcore.Transaction();
-      tx.addOutput(bitcore.Transaction.Output({
+      var tx = ioncore.Transaction();
+      tx.addOutput(ioncore.Transaction.Output({
         script: new Buffer('4c', 'hex'),
         satoshis: 5000000000
       }));
@@ -1154,14 +1154,14 @@ describe('Bitcoin Service', function() {
     });
     it('will return unique values', function() {
       var bitcoind = new BitcoinService(baseConfig);
-      var tx = bitcore.Transaction();
-      var address = bitcore.Address('8oUSpiq5REeEKAzS1qSXoJbZ9TRfH1L6mi');
-      tx.addOutput(bitcore.Transaction.Output({
-        script: bitcore.Script(address),
+      var tx = ioncore.Transaction();
+      var address = ioncore.Address('8oUSpiq5REeEKAzS1qSXoJbZ9TRfH1L6mi');
+      tx.addOutput(ioncore.Transaction.Output({
+        script: ioncore.Script(address),
         satoshis: 5000000000
       }));
-      tx.addOutput(bitcore.Transaction.Output({
-        script: bitcore.Script(address),
+      tx.addOutput(ioncore.Transaction.Output({
+        script: ioncore.Script(address),
         satoshis: 5000000000
       }));
       var addresses = bitcoind._getAddressesFromTransaction(tx);
@@ -1355,7 +1355,7 @@ describe('Bitcoin Service', function() {
     it('it will clear interval if node is stopping', function(done) {
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -1773,7 +1773,7 @@ describe('Bitcoin Service', function() {
     it('will exit spawn if shutdown', function() {
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -1941,7 +1941,7 @@ describe('Bitcoin Service', function() {
       });
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -2048,7 +2048,7 @@ describe('Bitcoin Service', function() {
     it('will give error if connecting while shutting down', function(done) {
       var config = {
         node: {
-          network: bitcore.Networks.testnet
+          network: ioncore.Networks.testnet
         },
         spawn: {
           datadir: 'testdir',
@@ -3373,10 +3373,10 @@ describe('Bitcoin Service', function() {
   });
 
   describe('#_getAddressStrings', function() {
-    it('will get address strings from bitcore addresses', function() {
+    it('will get address strings from ioncore addresses', function() {
       var addresses = [
-        bitcore.Address('XjxDQFjTNEP9dcrJhBLvy5i1Dobz4x1LJN'),
-        bitcore.Address('7d5169eBcGHF4BYC6DTffTyeCpWbrZnNgz'),
+        ioncore.Address('XjxDQFjTNEP9dcrJhBLvy5i1Dobz4x1LJN'),
+        ioncore.Address('7d5169eBcGHF4BYC6DTffTyeCpWbrZnNgz'),
       ];
       var bitcoind = new BitcoinService(baseConfig);
       var strings = bitcoind._getAddressStrings(addresses);
@@ -3395,7 +3395,7 @@ describe('Bitcoin Service', function() {
     });
     it('will get address strings from mixture of types', function() {
       var addresses = [
-        bitcore.Address('XjxDQFjTNEP9dcrJhBLvy5i1Dobz4x1LJN'),
+        ioncore.Address('XjxDQFjTNEP9dcrJhBLvy5i1Dobz4x1LJN'),
         '7d5169eBcGHF4BYC6DTffTyeCpWbrZnNgz',
       ];
       var bitcoind = new BitcoinService(baseConfig);
@@ -3405,7 +3405,7 @@ describe('Bitcoin Service', function() {
     });
     it('will give error with unknown', function() {
       var addresses = [
-        bitcore.Address('XjxDQFjTNEP9dcrJhBLvy5i1Dobz4x1LJN'),
+        ioncore.Address('XjxDQFjTNEP9dcrJhBLvy5i1Dobz4x1LJN'),
         0,
       ];
       var bitcoind = new BitcoinService(baseConfig);
@@ -3910,7 +3910,7 @@ describe('Bitcoin Service', function() {
         done();
       });
     });
-    it('will getblock as bitcore object from height', function(done) {
+    it('will getblock as ioncore object from height', function(done) {
       var bitcoind = new BitcoinService(baseConfig);
       var getBlock = sinon.stub().callsArgWith(2, null, {
         result: blockhex
@@ -3928,11 +3928,11 @@ describe('Bitcoin Service', function() {
         should.not.exist(err);
         getBlock.args[0][0].should.equal('00000000050a6d07f583beba2d803296eb1e9d4980c4a20f206c584e89a4f02b');
         getBlock.args[0][1].should.equal(false);
-        block.should.be.instanceof(bitcore.Block);
+        block.should.be.instanceof(ioncore.Block);
         done();
       });
     });
-    it('will getblock as bitcore object', function(done) {
+    it('will getblock as ioncore object', function(done) {
       var bitcoind = new BitcoinService(baseConfig);
       var getBlock = sinon.stub().callsArgWith(2, null, {
         result: blockhex
@@ -3950,7 +3950,7 @@ describe('Bitcoin Service', function() {
         getBlock.callCount.should.equal(1);
         getBlock.args[0][0].should.equal('00000000050a6d07f583beba2d803296eb1e9d4980c4a20f206c584e89a4f02b');
         getBlock.args[0][1].should.equal(false);
-        block.should.be.instanceof(bitcore.Block);
+        block.should.be.instanceof(ioncore.Block);
         done();
       });
     });
@@ -3971,12 +3971,12 @@ describe('Bitcoin Service', function() {
         should.not.exist(err);
         getBlockHash.callCount.should.equal(0);
         getBlock.callCount.should.equal(1);
-        block.should.be.instanceof(bitcore.Block);
+        block.should.be.instanceof(ioncore.Block);
         bitcoind.getBlock(hash, function(err, block) {
           should.not.exist(err);
           getBlockHash.callCount.should.equal(0);
           getBlock.callCount.should.equal(1);
-          block.should.be.instanceof(bitcore.Block);
+          block.should.be.instanceof(ioncore.Block);
           done();
         });
       });
@@ -3999,12 +3999,12 @@ describe('Bitcoin Service', function() {
         should.not.exist(err);
         getBlockHash.callCount.should.equal(1);
         getBlock.callCount.should.equal(1);
-        block.should.be.instanceof(bitcore.Block);
+        block.should.be.instanceof(ioncore.Block);
         bitcoind.getBlock(0, function(err, block) {
           should.not.exist(err);
           getBlockHash.callCount.should.equal(2);
           getBlock.callCount.should.equal(1);
-          block.should.be.instanceof(bitcore.Block);
+          block.should.be.instanceof(ioncore.Block);
           done();
         });
       });
@@ -4421,7 +4421,7 @@ describe('Bitcoin Service', function() {
   });
 
   describe('#sendTransaction', function(done) {
-    var tx = bitcore.Transaction(txhex);
+    var tx = ioncore.Transaction(txhex);
     it('will give rpc error', function() {
       var bitcoind = new BitcoinService(baseConfig);
       var sendRawTransaction = sinon.stub().callsArgWith(2, {message: 'error', code: -1});
@@ -4479,7 +4479,7 @@ describe('Bitcoin Service', function() {
           sendRawTransaction: sendRawTransaction
         }
       });
-      var transaction = bitcore.Transaction();
+      var transaction = ioncore.Transaction();
       (function() {
         bitcoind.sendTransaction(transaction);
       }).should.throw(Error);
@@ -4601,7 +4601,7 @@ describe('Bitcoin Service', function() {
           return done(err);
         }
         should.exist(tx);
-        tx.should.be.an.instanceof(bitcore.Transaction);
+        tx.should.be.an.instanceof(ioncore.Transaction);
         done();
       });
     });
@@ -4620,11 +4620,11 @@ describe('Bitcoin Service', function() {
           return done(err);
         }
         should.exist(tx);
-        tx.should.be.an.instanceof(bitcore.Transaction);
+        tx.should.be.an.instanceof(ioncore.Transaction);
 
         bitcoind.getTransaction('txid', function(err, tx) {
           should.exist(tx);
-          tx.should.be.an.instanceof(bitcore.Transaction);
+          tx.should.be.an.instanceof(ioncore.Transaction);
           getRawTransaction.callCount.should.equal(1);
           done();
         });

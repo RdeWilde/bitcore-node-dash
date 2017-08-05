@@ -1,4 +1,4 @@
-Bitcore Node Dash
+ioncore Node Dash
 ============
 
 A Dash full node for building applications and services with Node.js. A node is extensible and can be configured to run additional services. At the minimum a node has an interface to [Dash Core v0.12.1.x](https://github.com/dashpay/dash/tree/v0.12.1.x) for more advanced address queries. Additional services can be enabled to make a node more useful such as exposing new APIs, running a block explorer and wallet service.
@@ -6,7 +6,7 @@ A Dash full node for building applications and services with Node.js. A node is 
 ## Install
 
 ```bash
-npm install -g bitcore-node-dash
+npm install -g ioncore-node
 ```
 
 ## Prerequisites
@@ -19,14 +19,14 @@ npm install -g bitcore-node-dash
 
 ## Configuration
 
-Bitcore includes a Command Line Interface (CLI) for managing, configuring and interfacing with your Bitcore Node.
+ioncore includes a Command Line Interface (CLI) for managing, configuring and interfacing with your ioncore Node.
 
 ```bash
-bitcore-node-dash create -d <dash-data-dir> mynode
+ioncore-node create -d <dash-data-dir> mynode
 cd mynode
-bitcore-node-dash install <service>
-bitcore-node-dash install https://github.com/yourname/helloworld
-bitcore-node-dash start
+ioncore-node install <service>
+ioncore-node install https://github.com/yourname/helloworld
+ioncore-node start
 ```
 
 This will create a directory with configuration files for your node and install the necessary dependencies.
@@ -37,11 +37,11 @@ For more information about (and developing) services, please see the [Service Do
 
 ## Add-on Services
 
-There are several add-on services available to extend the functionality of Bitcore:
+There are several add-on services available to extend the functionality of ioncore:
 
 - [Insight API](https://github.com/dashpay/insight-api-dash/tree/master)
 - [Insight UI](https://github.com/dashpay/insight-ui-dash/tree/master)
-- [Bitcore Wallet Service](https://github.com/dashpay/bitcore-wallet-service/tree/master)
+- [ioncore Wallet Service](https://github.com/dashpay/ioncore-wallet-service/tree/master)
 
 ## Documentation
 
@@ -56,11 +56,11 @@ There are several add-on services available to extend the functionality of Bitco
 
 ## Contributing
 
-Please send pull requests for bug fixes, code optimization, and ideas for improvement. For more information on how to contribute, please refer to our [CONTRIBUTING](https://github.com/bitpay/bitcore/blob/master/CONTRIBUTING.md) file.
+Please send pull requests for bug fixes, code optimization, and ideas for improvement. For more information on how to contribute, please refer to our [CONTRIBUTING](https://github.com/bitpay/ioncore/blob/master/CONTRIBUTING.md) file.
 
 ## License
 
-Code released under [the MIT license](https://github.com/bitpay/bitcore-node-dash/blob/master/LICENSE).
+Code released under [the MIT license](https://github.com/bitpay/ioncore-node/blob/master/LICENSE).
 
 Copyright 2013-2015 BitPay, Inc.
 

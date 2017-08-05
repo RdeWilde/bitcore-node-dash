@@ -10,12 +10,12 @@ nvm install v4
 
 ## Fork and Download Repositories
 
-To develop bitcore-node-dash:
+To develop ioncore-node:
 
 ```bash
 cd ~
-git clone git@github.com:<yourusername>/bitcore-node-dash.git
-git clone git@github.com:<yourusername>/bitcore-lib.git
+git clone git@github.com:<yourusername>/ioncore-node.git
+git clone git@github.com:<yourusername>/ioncore-lib.git
 ```
 
 To develop bitcoin or to compile from source:
@@ -46,19 +46,19 @@ brew install zeromq
 ## Install and Symlink
 
 ```bash
-cd bitcore-lib
+cd ioncore-lib
 npm install
-cd ../bitcore-node-dash
+cd ../ioncore-node
 npm install
 ```
 **Note**: If you get a message about not being able to download bitcoin distribution, you'll need to compile bitcoind from source, and setup your configuration to use that version.
 
 
-We now will setup symlinks in `bitcore-node-dash` *(repeat this for any other modules you're planning on developing)*:
+We now will setup symlinks in `ioncore-node` *(repeat this for any other modules you're planning on developing)*:
 ```bash
 cd node_modules
-rm -rf bitcore-lib
-ln -s ~/bitcore-lib
+rm -rf ioncore-lib
+ln -s ~/ioncore-lib
 rm -rf bitcoind-rpc-dash
 ln -s ~/bitcoind-rpc-dash
 ```
@@ -78,7 +78,7 @@ npm install mocha -g
 
 To run all test suites:
 ```bash
-cd bitcore-node-dash
+cd ioncore-node
 npm run regtest
 npm run test
 ```
@@ -102,11 +102,11 @@ cd ~
 mkdir devnode
 cd devnode
 mkdir node_modules
-touch bitcore-node-dash.json
+touch ioncore-node.json
 touch package.json
 ```
 
-Edit `bitcore-node-dash.json` with something similar to:
+Edit `ioncore-node.json` with something similar to:
 ```json
 {
   "network": "livenet",
@@ -135,8 +135,8 @@ Setup symlinks for all of the services and dependencies:
 
 ```bash
 cd node_modules
-ln -s ~/bitcore-lib
-ln -s ~/bitcore-node-dash
+ln -s ~/ioncore-lib
+ln -s ~/ioncore-node
 ln -s ~/insight-api
 ln -s ~/insight-ui
 ```
@@ -158,5 +158,5 @@ rpcpassword=local321
 
 From within the `devnode` directory with the configuration file, start the node:
 ```bash
-../bitcore-node-dash/bin/bitcore-node-dash start
+../ioncore-node/bin/ioncore-node start
 ```

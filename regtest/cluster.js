@@ -6,20 +6,20 @@ var spawn = require('child_process').spawn;
 
 var BitcoinRPC = require('bitcoind-rpc-dash');
 var rimraf = require('rimraf');
-var bitcore = require('bitcore-lib-dash');
+var ioncore = require('ioncore-lib-dash');
 var chai = require('chai');
 var should = chai.should();
 
 var index = require('..');
 var log = index.log;
 log.debug = function() {};
-var BitcoreNode = index.Node;
+var ioncoreNode = index.Node;
 var BitcoinService = index.services.Bitcoin;
 
 describe('Bitcoin Cluster', function() {
   var node;
   var daemons = [];
-  var execPath = path.resolve(__dirname, process.env.HOME, './.bitcore/data/dashd')
+  var execPath = path.resolve(__dirname, process.env.HOME, './.ioncore/data/dashd')
   var nodesConf = [
     {
       datadir: path.resolve(__dirname, './data/node1'),
@@ -133,10 +133,10 @@ describe('Bitcoin Cluster', function() {
       ]
     };
 
-    var regtest = bitcore.Networks.get('regtest');
+    var regtest = ioncore.Networks.get('regtest');
     should.exist(regtest);
 
-    node = new BitcoreNode(configuration);
+    node = new ioncoreNode(configuration);
 
     node.on('error', function(err) {
       log.error(err);

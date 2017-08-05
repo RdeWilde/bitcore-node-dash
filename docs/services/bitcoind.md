@@ -1,6 +1,6 @@
 # Bitcoin Service
 
-The Bitcoin Service is a Node.js interface to [Bitcoin Core](https://github.com/bitcoin/bitcoin) for querying information about the bitcoin block chain. It will manage starting and stopping `bitcoind` or connect to several running `bitcoind` processes. It uses a branch of a [branch of Bitcoin Core](https://github.com/bitpay/bitcoin/tree/0.12-bitcore) with additional indexes for querying information about addresses and blocks. Results are cached for performance and there are several additional API methods added for common queries.
+The Bitcoin Service is a Node.js interface to [Bitcoin Core](https://github.com/bitcoin/bitcoin) for querying information about the bitcoin block chain. It will manage starting and stopping `bitcoind` or connect to several running `bitcoind` processes. It uses a branch of a [branch of Bitcoin Core](https://github.com/bitpay/bitcoin/tree/0.12-ioncore) with additional indexes for querying information about addresses and blocks. Results are cached for performance and there are several additional API methods added for common queries.
 
 ## Configuration
 
@@ -10,8 +10,8 @@ The default configuration will include a "spawn" configuration in "bitcoind". Th
   "servicesConfig": {
     "bitcoind": {
       "spawn": {
-        "datadir": "/home/bitcore/.bitcoin",
-        "exec": "/home/bitcore/bitcoin/src/bitcoind"
+        "datadir": "/home/ioncore/.bitcoin",
+        "exec": "/home/ioncore/bitcoin/src/bitcoind"
       }
     }
   }
@@ -110,7 +110,7 @@ node.services.bitcoind.generateBlock(numberOfBlocks, function(err, blockHashes) 
 
 **Getting Block Information**
 
-It's possible to query blocks by both block hash and by height. Blocks are given as Node.js Buffers and can be parsed via Bitcore:
+It's possible to query blocks by both block hash and by height. Blocks are given as Node.js Buffers and can be parsed via ioncore:
 
 ```js
 var blockHeight = 0;
@@ -118,11 +118,11 @@ node.services.bitcoind.getRawBlock(blockHeight, function(err, blockBuffer) {
   if (err) {
     throw err;
   }
-  var block = bitcore.Block.fromBuffer(blockBuffer);
+  var block = ioncore.Block.fromBuffer(blockBuffer);
   console.log(block);
 };
 
-// get a bitcore object of the block (as above)
+// get a ioncore object of the block (as above)
 node.services.bitcoind.getBlock(blockHash, function(err, block) {
   //...
 };
@@ -148,10 +148,10 @@ node.services.bitcoind.getRawTransaction(txid, function(err, transactionBuffer) 
   if (err) {
     throw err;
   }
-  var transaction = bitcore.Transaction().fromBuffer(transactionBuffer);
+  var transaction = ioncore.Transaction().fromBuffer(transactionBuffer);
 });
 
-// get a bitcore object of the transaction (as above)
+// get a ioncore object of the transaction (as above)
 node.services.bitcoind.getTransaction(txid, function(err, transaction) {
   //...
 });
