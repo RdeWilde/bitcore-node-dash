@@ -22,7 +22,7 @@ Services correspond with a Node.js module as described in 'package.json', for ex
   "dependencies": {
     "ioncore-lib": "^0.13.7",
     "ioncore-node": "^0.2.0",
-    "insight-api": "^3.0.0"
+    "ion-insight-api": "^3.0.0"
   }
 }
 ```

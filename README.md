@@ -39,8 +39,8 @@ For more information about (and developing) services, please see the [Service Do
 
 There are several add-on services available to extend the functionality of ioncore:
 
-- [Insight API](https://github.com/dashpay/insight-api-dash/tree/master)
-- [Insight UI](https://github.com/dashpay/insight-ui-dash/tree/master)
+- [Insight API](https://github.com/dashpay/ion-insight-api-dash/tree/master)
+- [Insight UI](https://github.com/dashpay/ion-insight-ui-dash/tree/master)
 - [ioncore Wallet Service](https://github.com/dashpay/ioncore-wallet-service/tree/master)
 
 ## Documentation

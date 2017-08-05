@@ -114,8 +114,8 @@ Edit `ioncore-node.json` with something similar to:
   "services": [
     "bitcoind",
     "web",
-    "insight-api",
-    "insight-ui",
+    "ion-insight-api",
+    "ion-insight-ui",
     "<additional_service>"
   ],
   "servicesConfig": {
@@ -129,7 +129,7 @@ Edit `ioncore-node.json` with something similar to:
 }
 ```
 
-**Note**: To install services [insight-api](https://github.com/bitpay/insight-api) and [insight-ui](https://github.com/bitpay/insight-ui) you'll need to clone the repositories locally.
+**Note**: To install services [ion-insight-api](https://github.com/bitpay/ion-insight-api) and [ion-insight-ui](https://github.com/bitpay/ion-insight-ui) you'll need to clone the repositories locally.
 
 Setup symlinks for all of the services and dependencies:
 
@@ -137,8 +137,8 @@ Setup symlinks for all of the services and dependencies:
 cd node_modules
 ln -s ~/ioncore-lib
 ln -s ~/ioncore-node
-ln -s ~/insight-api
-ln -s ~/insight-ui
+ln -s ~/ion-insight-api
+ln -s ~/ion-insight-ui
 ```
 
 Make sure that the `<datadir>/bitcoin.conf` has the necessary settings, for example:
