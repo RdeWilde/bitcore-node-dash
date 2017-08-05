@@ -5,19 +5,20 @@ set -e
 root_dir="${HOME}/.ioncore"
 platform=`uname -a | awk '{print tolower($1)}'`
 arch=`uname -m`
-version="0.12.1"
-url="https://bamboo.dash.org/browse/DASHL-REL/latestSuccessful/artifact/JOB1/gitian-linux-dash-dist"
+version="2.1.6.2"
+#url="https://bamboo.dash.org/browse/DASHL-REL/latestSuccessful/artifact/JOB1/gitian-linux-dash-dist"
+url="https://github.com/cevap/ion/releases/download/v${version}"
 
 if [ "${platform}" == "linux" ]; then
     if [ "${arch}" == "x86_64" ]; then
-        tarball_name="dashcore-${version}-linux64.tar.gz"
+        tarball_name="iond"
     elif [ "${arch}" == "x86_32" ]; then
-        tarball_name="dashcore-${version}-linux32.tar.gz"
+        tarball_name="iond-x86"
     fi
 elif [ "${platform}" == "darwin" ]; then
-    tarball_name="dashcore-${version}-osx64.tar.gz"
+    tarball_name="ion-osx.dmg"
 else
-    echo "Dash binary distribution not available for platform and architecture"
+    echo "ION binary distribution not available for platform and architecture"
     exit -1
 fi
 
@@ -31,7 +32,7 @@ download_bitcoind() {
 
     cd "${root_dir}/data"
 
-    echo "Downloading dash: ${binary_url}"
+    echo "Downloading ION: ${binary_url}"
 
     is_curl=true
     if hash curl 2>/dev/null; then
@@ -44,26 +45,29 @@ download_bitcoind() {
     if test $? -eq 0; then
         if [ "${is_curl}" = true ]; then
             curl -L $binary_url > $tarball_name
-            curl -L $shasums_url > SHA256SUMS.asc
+            #curl -L $shasums_url > SHA256SUMS.asc
         else
             wget $binary_url
-            wget $shasums_url
+            #wget $shasums_url
         fi
         if test -e "${tarball_name}"; then
-            echo "Unpacking dash distribution"
-            tar -xvzf $tarball_name
-            if test $? -eq 0; then
-                ln -sf "dashcore-${version}/bin/dashd"
-                return;
+            #echo "Unpacking ION distribution"
+            #tar -xvzf $tarball_name
+            #if test $? -eq 0; then
+            if [ $tarball_name != "iond" ]; then
+                ln -sf "${tarball_name}" "iond"
             fi
+            chmod +x "iond"
+            return;
+            #fi
         fi
     fi
-    echo "Dash binary distribution could not be downloaded"
+    echo "ION binary distribution could not be downloaded"
     exit -1
 }
 
 verify_download() {
-    echo "Verifying signatures of dash download"
+    echo "Verifying signatures of ION download"
     gpg --verify "${root_dir}/bin/SHA256SUMS.asc"
 
     if hash shasum 2>/dev/null; then
@@ -114,8 +118,8 @@ if [ "${download}" = 1 ]; then
     download_bitcoind
 fi
 
-if [ "${verify}" = 1 ]; then
-    verify_download
-fi
+#if [ "${verify}" = 1 ]; then
+#    verify_download
+#fi
 
 exit 0
